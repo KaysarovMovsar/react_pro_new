@@ -2,16 +2,58 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { applyMiddleware, createStore } from "redux";
+import { Provider } from "react-redux";
+import { thunk } from "redux-thunk";
+
+const initialState = {
+    todos: [
+        {
+            "userId": 1,
+            "id": 1,
+            "title": "delectus aut autem",
+            "completed": false
+        },
+        {
+            "userId": 1,
+            "id": 2,
+            "title": "quis ut nam facilis et officia qui",
+            "completed": false
+        },
+        {
+            "userId": 1,
+            "id": 3,
+            "title": "fugiat veniam minus",
+            "completed": false
+        }
+    ],
+    loading: false
+}
+
+const reducer = (state=initialState, action) => {
+    switch (action.type) {
+        case "load/todos/start":
+            return {
+                ...state,
+                loading: true
+            }
+        case "load/todos/fulfilled":
+            return {
+                ...state,
+                todos: action.payload,
+                loading: false
+            }
+        default:
+            return state
+    }
+}
+const store = createStore(reducer, applyMiddleware(thunk))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>
+  </Provider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
