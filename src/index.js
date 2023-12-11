@@ -43,6 +43,11 @@ const reducer = (state=initialState, action) => {
                 todos: action.payload,
                 loading: false
             }
+        case "remove/todo/fulfilled":
+            return {
+                ...state,
+                todos: state.todos.filter((item) => item.id !== action.payload)
+            }
         default:
             return state
     }
