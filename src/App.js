@@ -1,6 +1,6 @@
 import { useDispatch, useSelector} from "react-redux";
 import { useEffect } from "react";
-import { loadTodos } from "./action";
+import {loadTodos, removeTodo} from "./action";
 
 const App = () => {
 
@@ -12,6 +12,12 @@ const App = () => {
   useEffect(()=> {
     dispatch(loadTodos())
   }, [])
+
+  const handleClick = (id) => {
+    dispatch(removeTodo(id))
+  }
+
+
   return(
     <>
       {
@@ -19,7 +25,18 @@ const App = () => {
             todos.map(item => {
               return(
                   <>
-                    {item.title}
+                    <div className="container">
+                      <div className="checkbox">
+                        <input type="checkbox"/>
+                      </div>
+                      <div>{item.title}</div>
+                      <div className="button">
+                        <button onClick={() => handleClick(item.id)}>
+                          Удалить
+                        </button>
+                      </div>
+
+                    </div>
                   </>
               )
             })

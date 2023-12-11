@@ -9,3 +9,16 @@ export const loadTodos = () => {
             }))
     }
 }
+
+export const removeTodo = (id) => {
+    return (dispatch) => {
+        dispatch({type: `remove/todo/start`})
+        fetch(`https://jsonplaceholder.typicode.com/todos/${id}`,
+            {method: "DELETE"})
+            .then((response)=> response.json())
+            .then((json)=> dispatch({
+                type: "remove/todo/fulfilled",
+                payload: id
+            }))
+    }
+}
