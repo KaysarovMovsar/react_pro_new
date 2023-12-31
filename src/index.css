@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.loading_circle {
+  margin: 0 auto;
+}
+
 .container {
   width: 600px;
   margin: auto;

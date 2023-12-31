@@ -1,45 +1,38 @@
 import { useDispatch, useSelector} from "react-redux";
 import { useEffect } from "react";
-import {loadTodos, removeTodo} from "./action";
+import { checkedTodo, loadTodos, loadUsers, removeTodo } from "./redux/action";
+import ReactLoading from "react-loading"
+import { Todos } from "./components/Todos";
 
 const App = () => {
 
-  const todos = useSelector(state => state.todos)
   const loading = useSelector(state => state.loading)
+  const userLoading = useSelector(state => state.usersLoading)
+  const checkLoading = loading || userLoading
 
   const dispatch = useDispatch()
 
   useEffect(()=> {
     dispatch(loadTodos())
+    dispatch(loadUsers())
   }, [])
 
   const handleClick = (id) => {
     dispatch(removeTodo(id))
   }
 
+  const handleChecking = (id, completed) => {
+    dispatch(checkedTodo(id, completed))
+  }
 
   return(
     <>
       {
-        loading ? "Wait please! The download is in progress" : (
-            todos.map(item => {
-              return(
-                  <>
-                    <div className="container">
-                      <div className="checkbox">
-                        <input type="checkbox"/>
-                      </div>
-                      <div>{item.title}</div>
-                      <div className="button">
-                        <button onClick={() => handleClick(item.id)}>
-                          Удалить
-                        </button>
-                      </div>
-
-                    </div>
-                  </>
-              )
-            })
+        checkLoading ? <ReactLoading type="spin" color="blue" height={200} width={200} className="loading_circle"/> : (
+            <Todos
+                handleClick={handleClick}
+                handleChecking={handleChecking}
+            />
         )
       }
     </>
